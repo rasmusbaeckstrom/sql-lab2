@@ -25,12 +25,12 @@ public class Category {
     @Column(name = "symbol")
     private String symbol;
 
-    @Size(max = 255)
+    @Lob
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "category")
     @JsonIgnore
+    @OneToMany(mappedBy = "category")
     private Set<Place> places = new LinkedHashSet<>();
 
     public Long getId() {
@@ -41,19 +41,19 @@ public class Category {
         this.id = id;
     }
 
-    public String getName() {
+    public @Size(max = 255) @NotNull String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(@Size(max = 255) @NotNull String name) {
         this.name = name;
     }
 
-    public String getSymbol() {
+    public @Size(max = 255) String getSymbol() {
         return symbol;
     }
 
-    public void setSymbol(String symbol) {
+    public void setSymbol(@Size(max = 255) String symbol) {
         this.symbol = symbol;
     }
 
