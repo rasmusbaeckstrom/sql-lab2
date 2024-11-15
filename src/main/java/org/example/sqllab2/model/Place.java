@@ -16,35 +16,36 @@ public class Place {
     private Long id;
 
     @Size(max = 255)
-    @Column(name = "coordinates")
-    private String coordinates;
+    @NotNull
+    @Column(name = "name", nullable = false)
+    private String name;
 
-    @Column(name = "created_at")
-    private Instant createdAt;
+    @NotNull
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 
-    @Size(max = 255)
-    @Column(name = "description")
-    private String description;
+    @NotNull
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 
-    @ColumnDefault("b'1'")
+    @ColumnDefault("1")
     @Column(name = "is_public")
     private Boolean isPublic;
 
     @Column(name = "last_modified")
     private Instant lastModified;
 
-    @Size(max = 255)
-    @NotNull
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Lob
+    @Column(name = "description")
+    private String description;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @ColumnDefault("CURRENT_TIMESTAMP")
+    @Column(name = "created_at")
+    private Instant createdAt;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
+    @Column(name = "coordinates", columnDefinition = "geometry")
+    private Object coordinates;
 
     public Long getId() {
         return id;
@@ -54,28 +55,28 @@ public class Place {
         this.id = id;
     }
 
-    public String getCoordinates() {
-        return coordinates;
+    public String getName() {
+        return name;
     }
 
-    public void setCoordinates(String coordinates) {
-        this.coordinates = coordinates;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Instant getCreatedAt() {
-        return createdAt;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
-    public String getDescription() {
-        return description;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public Boolean getIsPublic() {
@@ -94,28 +95,27 @@ public class Place {
         this.lastModified = lastModified;
     }
 
-    public String getName() {
-        return name;
+    public String getDescription() {
+        return description;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Instant getCreatedAt() {
+        return createdAt;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public Category getCategory() {
-        return category;
+    public Object getCoordinates() {
+        return coordinates;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCoordinates(Object coordinates) {
+        this.coordinates = coordinates;
     }
-
 }
