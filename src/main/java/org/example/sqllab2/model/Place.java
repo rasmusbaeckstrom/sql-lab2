@@ -3,6 +3,8 @@ package org.example.sqllab2.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.geolatte.geom.G2D;
+import org.geolatte.geom.Point;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
@@ -45,7 +47,7 @@ public class Place {
     private Instant createdAt;
 
     @Column(name = "coordinates", columnDefinition = "geometry")
-    private Object coordinates;
+    private Point<G2D> coordinates;
 
     public Long getId() {
         return id;
@@ -111,11 +113,11 @@ public class Place {
         this.createdAt = createdAt;
     }
 
-    public Object getCoordinates() {
+    public Point<G2D> getCoordinates() {
         return coordinates;
     }
 
-    public void setCoordinates(Object coordinates) {
+    public void setCoordinates(Point<G2D> coordinates) {
         this.coordinates = coordinates;
     }
 }
