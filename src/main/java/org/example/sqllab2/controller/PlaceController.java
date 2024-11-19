@@ -45,6 +45,13 @@ public class PlaceController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/radius")
+    public List<PlaceDTO> getPlacesWithinRadius(@RequestParam double latitude, @RequestParam double longitude, @RequestParam double radius) {
+        return placeService.getPlacesWithinRadius(latitude, longitude, radius).stream()
+                .map(PlaceConverter::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     @PostMapping
     public ResponseEntity<PlaceDTO> createPlace(@RequestBody Place place) {
         Place createdPlace = placeService.createPlace(place);
