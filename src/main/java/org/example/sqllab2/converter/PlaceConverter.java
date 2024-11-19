@@ -19,8 +19,8 @@ public class PlaceConverter {
                 place.getUserId(),
                 place.getIsPublic(),
                 place.getDescription(),
-                place.getCoordinates().getPosition().getCoordinate(0),
                 place.getCoordinates().getPosition().getCoordinate(1),
+                place.getCoordinates().getPosition().getCoordinate(0),
                 categoryDTO
         );
     }
