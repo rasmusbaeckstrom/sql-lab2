@@ -14,6 +14,9 @@ public interface PlaceRepository extends ListCrudRepository<Place, Long> {
     List<Place> findByCategoryIdAndIsPublicTrue(Long categoryId);
     List<Place> findByUserId(String userId);
 
+    @Query("SELECT p FROM Place p WHERE p.category.id = :categoryId AND (p.isPublic = true OR p.userId = :userId)")
+    List<Place> findByCategoryIdAndIsPublicTrueOrUserId(@Param("categoryId") Long categoryId, @Param("userId") String userId);
+
     @Query("SELECT p FROM Place p WHERE ST_Distance_Sphere(p.coordinates, ST_GeomFromText(:point, 4326)) <= :radius AND p.isPublic = true")
     List<Place> findPublicPlacesWithinRadius(@Param("point") String point, @Param("radius") double radius);
 
