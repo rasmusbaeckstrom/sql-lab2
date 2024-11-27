@@ -30,6 +30,7 @@ public class SecurityConfig {
                         .requestMatchers(GET, "/api/places/**").permitAll()
                         .requestMatchers(GET, "/api/places/category/**").permitAll()
                         .requestMatchers(GET, "/api/places/radius").permitAll()
+                        .requestMatchers(POST, "/api/places/**").hasRole("USER")
 
                         .anyRequest().authenticated()
                 )
