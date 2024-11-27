@@ -6,6 +6,7 @@ import org.example.sqllab2.service.PlaceService;
 import org.example.sqllab2.converter.PlaceConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,8 +19,8 @@ public class PlaceController {
     private PlaceService placeService;
 
     @GetMapping
-    public List<PlaceDTO> getAllPublicPlaces() {
-        return placeService.getAllPublicPlaces().stream()
+    public List<PlaceDTO> getAllPlacesForUser() {
+        return placeService.getAllPlacesForUser().stream()
                 .map(PlaceConverter::convertToDTO)
                 .collect(Collectors.toList());
     }
@@ -39,7 +40,8 @@ public class PlaceController {
     }
 
     @GetMapping("/user/{userId}")
-    public List<PlaceDTO> getUserPlaces(@PathVariable Long userId) {
+    @PreAuthorize("isAuthenticated()")
+    public List<PlaceDTO> getUserPlaces(@PathVariable String userId) {
         return placeService.getUserPlaces(userId).stream()
                 .map(PlaceConverter::convertToDTO)
                 .collect(Collectors.toList());
@@ -53,12 +55,14 @@ public class PlaceController {
     }
 
     @PostMapping
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<PlaceDTO> createPlace(@RequestBody Place place) {
         Place createdPlace = placeService.createPlace(place);
         return ResponseEntity.ok(PlaceConverter.convertToDTO(createdPlace));
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<PlaceDTO> updatePlace(@PathVariable Long id, @RequestBody Place place) {
         place.setId(id);
         Place updatedPlace = placeService.updatePlace(place);
@@ -66,6 +70,7 @@ public class PlaceController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Void> deletePlace(@PathVariable Long id) {
         placeService.deletePlace(id);
         return ResponseEntity.noContent().build();
