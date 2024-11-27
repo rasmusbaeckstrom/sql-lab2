@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS place
 (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    user_id BIGINT NOT NULL,
+    user_id VARCHAR(255) NOT NULL,
     is_public BOOLEAN DEFAULT TRUE,
     last_modified TIMESTAMP,
     description TEXT,
