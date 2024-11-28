@@ -34,23 +34,23 @@ VALUES
 -- Grocery Stores
 INSERT INTO place (name, category_id, user_id, is_public, last_modified, description, coordinates, created_at)
 VALUES
-    ('City Market', 2, 'casey', TRUE, NOW(), 'A large grocery store offering fresh produce and a variety of products.', ST_GeomFromText('POINT(18.0627 59.3298)', 4326), NOW()),
-    ('Organic Goods', 2, 'casey', TRUE, NOW(), 'A grocery store specializing in organic and sustainable products.', ST_GeomFromText('POINT(18.0679 59.3205)', 4326), NOW()),
-    ('Foodies Hub', 2, 'casey', TRUE, NOW(), 'A modern grocery store with a wide selection of international foods.', ST_GeomFromText('POINT(18.0632 59.3158)', 4326), NOW()),
-    ('FreshMart', 2, 'casey', FALSE, NOW(), 'A neighborhood grocery store known for its fresh fruits and vegetables.', ST_GeomFromText('POINT(18.0703 59.3170)', 4326), NOW());
+    ('City Market', 2, 'anna', TRUE, NOW(), 'A large grocery store offering fresh produce and a variety of products.', ST_GeomFromText('POINT(18.0627 59.3298)', 4326), NOW()),
+    ('Organic Goods', 2, 'anna', TRUE, NOW(), 'A grocery store specializing in organic and sustainable products.', ST_GeomFromText('POINT(18.0679 59.3205)', 4326), NOW()),
+    ('Foodies Hub', 2, 'anna', TRUE, NOW(), 'A modern grocery store with a wide selection of international foods.', ST_GeomFromText('POINT(18.0632 59.3158)', 4326), NOW()),
+    ('FreshMart', 2, 'anna', FALSE, NOW(), 'A neighborhood grocery store known for its fresh fruits and vegetables.', ST_GeomFromText('POINT(18.0703 59.3170)', 4326), NOW());
 
 -- Pharmacies
 INSERT INTO place (name, category_id, user_id, is_public, last_modified, description, coordinates, created_at)
 VALUES
-    ('Healthy Life Pharmacy', 3, 'maya', FALSE, NOW(), 'A pharmacy offering a wide range of medicines and health products.', ST_GeomFromText('POINT(18.0702 59.3263)', 4326), NOW()),
-    ('WellCare Pharmacy', 3, 'maya', TRUE, NOW(), 'Pharmacy focused on customer health and providing advice on wellness products.', ST_GeomFromText('POINT(18.0625 59.3241)', 4326), NOW()),
-    ('PharmaPlus', 3, 'maya', TRUE, NOW(), 'A convenient pharmacy offering both prescription and over-the-counter medicines.', ST_GeomFromText('POINT(18.0730 59.3281)', 4326), NOW()),
-    ('MedCure Pharmacy', 3, 'maya', TRUE, NOW(), 'A pharmacy providing a variety of health and beauty products, along with professional medical advice.', ST_GeomFromText('POINT(18.0690 59.3223)', 4326), NOW());
+    ('Healthy Life Pharmacy', 3, 'olle', FALSE, NOW(), 'A pharmacy offering a wide range of medicines and health products.', ST_GeomFromText('POINT(18.0702 59.3263)', 4326), NOW()),
+    ('WellCare Pharmacy', 3, 'olle', TRUE, NOW(), 'Pharmacy focused on customer health and providing advice on wellness products.', ST_GeomFromText('POINT(18.0625 59.3241)', 4326), NOW()),
+    ('PharmaPlus', 3, 'olle', TRUE, NOW(), 'A convenient pharmacy offering both prescription and over-the-counter medicines.', ST_GeomFromText('POINT(18.0730 59.3281)', 4326), NOW()),
+    ('MedCure Pharmacy', 3, 'olle', TRUE, NOW(), 'A pharmacy providing a variety of health and beauty products, along with professional medical advice.', ST_GeomFromText('POINT(18.0690 59.3223)', 4326), NOW());
 
 -- Gym and Fitness
 INSERT INTO place (name, category_id, user_id, is_public, last_modified, description, coordinates, created_at)
 VALUES
-    ('FitZone Gym', 4, 'sky', TRUE, NOW(), 'A modern gym offering state-of-the-art equipment and fitness classes.', ST_GeomFromText('POINT(18.0630 59.3274)', 4326), NOW()),
-    ('PowerHouse Gym', 4, 'sky', FALSE, NOW(), 'A fitness center with a focus on weight training and strength building.', ST_GeomFromText('POINT(18.0703 59.3229)', 4326), NOW()),
-    ('Wellness Studio', 4, 'sky', TRUE, NOW(), 'A boutique fitness studio offering yoga, pilates, and personal training.', ST_GeomFromText('POINT(18.0650 59.3247)', 4326), NOW()),
-    ('Cardio Fitness Center', 4, 'sky', TRUE, NOW(), 'A gym specialized in cardio exercises and fitness classes.', ST_GeomFromText('POINT(18.0683 59.3200)', 4326), NOW());
+    ('FitZone Gym', 4, 'sara', TRUE, NOW(), 'A modern gym offering state-of-the-art equipment and fitness classes.', ST_GeomFromText('POINT(18.0630 59.3274)', 4326), NOW()),
+    ('PowerHouse Gym', 4, 'sara', FALSE, NOW(), 'A fitness center with a focus on weight training and strength building.', ST_GeomFromText('POINT(18.0703 59.3229)', 4326), NOW()),
+    ('Wellness Studio', 4, 'sara', TRUE, NOW(), 'A boutique fitness studio offering yoga, pilates, and personal training.', ST_GeomFromText('POINT(18.0650 59.3247)', 4326), NOW()),
+    ('Cardio Fitness Center', 4, 'sara', TRUE, NOW(), 'A gym specialized in cardio exercises and fitness classes.', ST_GeomFromText('POINT(18.0683 59.3200)', 4326), NOW());

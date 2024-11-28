@@ -19,16 +19,29 @@ public class PlaceService {
     @Autowired
     private PlaceRepository placeRepository;
 
-    public List<PlaceDTO> getAllPublicPlaces() {
-        return placeRepository.findByIsPublicTrue().stream()
-                .map(PlaceDTO::fromEntity)
-                .collect(Collectors.toList());
+    public List<PlaceDTO> getAllPlacesForUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() && !authentication.getName().equals("anonymousUser")) {
+            String username = authentication.getName();
+            return placeRepository.findByIsPublicTrueOrUserId(username).stream()
+                    .map(PlaceDTO::fromEntity)
+                    .collect(Collectors.toList());
+        } else {
+            return placeRepository.findByIsPublicTrue().stream()
+                    .map(PlaceDTO::fromEntity)
+                    .collect(Collectors.toList());
+        }
     }
 
     public Optional<PlaceDTO> getPublicPlaceById(Long id) {
-        return placeRepository.findById(id)
-                .filter(Place::getIsPublic)
-                .map(PlaceDTO::fromEntity);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() && !authentication.getName().equals("anonymousUser")) {
+            return placeRepository.findById(id).map(PlaceDTO::fromEntity);
+        } else {
+            return placeRepository.findById(id)
+                    .filter(Place::getIsPublic)
+                    .map(PlaceDTO::fromEntity);
+        }
     }
 
     public List<PlaceDTO> getPublicPlacesByCategory(Long categoryId) {
@@ -66,20 +79,6 @@ public class PlaceService {
                     .collect(Collectors.toList());
         } else {
             return placeRepository.findPublicPlacesWithinRadius(point, radius).stream()
-                    .map(PlaceDTO::fromEntity)
-                    .collect(Collectors.toList());
-        }
-    }
-
-    public List<PlaceDTO> getAllPlacesForUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated() && !authentication.getName().equals("anonymousUser")) {
-            String username = authentication.getName();
-            return placeRepository.findByIsPublicTrueOrUserId(username).stream()
-                    .map(PlaceDTO::fromEntity)
-                    .collect(Collectors.toList());
-        } else {
-            return placeRepository.findByIsPublicTrue().stream()
                     .map(PlaceDTO::fromEntity)
                     .collect(Collectors.toList());
         }

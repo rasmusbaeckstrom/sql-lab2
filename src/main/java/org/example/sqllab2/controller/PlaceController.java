@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -47,7 +48,7 @@ public class PlaceController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<PlaceDTO> createPlace(@RequestBody PlaceDTO placeDTO) {
         PlaceDTO createdPlace = placeService.createPlace(placeDTO);
-        return ResponseEntity.ok(createdPlace);
+        return ResponseEntity.created(URI.create("/api/places/" + createdPlace.id())).body(createdPlace);
     }
 
     @PutMapping("/{id}")
