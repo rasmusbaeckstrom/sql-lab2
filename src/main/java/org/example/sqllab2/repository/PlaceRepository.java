@@ -7,12 +7,17 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PlaceRepository extends ListCrudRepository<Place, Long> {
     List<Place> findByIsPublicTrue();
     List<Place> findByCategoryIdAndIsPublicTrue(Long categoryId);
     List<Place> findByUserId(String userId);
+    List<Place> findByUserIdAndIsPublicTrue(String userId);
+
+    @Query("SELECT p FROM Place p WHERE p.id = :id AND p.deleted = false")
+    Optional<Place> findActiveById(@Param("id") Long id);
 
     @Query("SELECT p FROM Place p WHERE p.category.id = :categoryId AND (p.isPublic = true OR p.userId = :userId)")
     List<Place> findByCategoryIdAndIsPublicTrueOrUserId(@Param("categoryId") Long categoryId, @Param("userId") String userId);

@@ -28,6 +28,7 @@ public class PlaceService {
                     .collect(Collectors.toList());
         } else {
             return placeRepository.findByIsPublicTrue().stream()
+                    .filter(place -> !place.getDeleted())
                     .map(PlaceDTO::fromEntity)
                     .collect(Collectors.toList());
         }
@@ -36,10 +37,11 @@ public class PlaceService {
     public Optional<PlaceDTO> getPublicPlaceById(Long id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated() && !authentication.getName().equals("anonymousUser")) {
-            return placeRepository.findById(id).map(PlaceDTO::fromEntity);
+            return placeRepository.findById(id)
+                    .map(PlaceDTO::fromEntity);
         } else {
             return placeRepository.findById(id)
-                    .filter(Place::getIsPublic)
+                    .filter(place -> place.getIsPublic() && !place.getDeleted())
                     .map(PlaceDTO::fromEntity);
         }
     }
@@ -53,6 +55,7 @@ public class PlaceService {
                     .collect(Collectors.toList());
         } else {
             return placeRepository.findByCategoryIdAndIsPublicTrue(categoryId).stream()
+                    .filter(place -> !place.getDeleted())
                     .map(PlaceDTO::fromEntity)
                     .collect(Collectors.toList());
         }
@@ -60,13 +63,17 @@ public class PlaceService {
 
     public List<PlaceDTO> getUserPlaces(String userId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated() && authentication.getName().equals(userId)) {
-            return placeRepository.findByUserId(userId).stream()
-                    .map(PlaceDTO::fromEntity)
-                    .collect(Collectors.toList());
-        } else {
-            throw new SecurityException("You are not authorized to access this resource");
+        if (authentication != null && authentication.isAuthenticated() && !authentication.getName().equals("anonymousUser")) {
+            if (authentication.getName().equals(userId)) {
+                return placeRepository.findByUserId(userId).stream()
+                        .map(PlaceDTO::fromEntity)
+                        .collect(Collectors.toList());
+            }
         }
+        return placeRepository.findByUserIdAndIsPublicTrue(userId).stream()
+                .filter(place -> !place.getDeleted())
+                .map(PlaceDTO::fromEntity)
+                .collect(Collectors.toList());
     }
 
     public List<PlaceDTO> getPlacesWithinRadius(double latitude, double longitude, double radius) {
@@ -79,6 +86,7 @@ public class PlaceService {
                     .collect(Collectors.toList());
         } else {
             return placeRepository.findPublicPlacesWithinRadius(point, radius).stream()
+                    .filter(place -> !place.getDeleted())
                     .map(PlaceDTO::fromEntity)
                     .collect(Collectors.toList());
         }
@@ -103,14 +111,50 @@ public class PlaceService {
     }
 
     public PlaceDTO updatePlace(Long id, PlaceDTO placeDTO) {
-        Place place = placeDTO.toEntity();
-        place.setId(id);
-        place.setLastModified(Instant.now());
-        Place updatedPlace = placeRepository.save(place);
-        return PlaceDTO.fromEntity(updatedPlace);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() && !authentication.getName().equals("anonymousUser")) {
+            String userId = authentication.getName();
+            Optional<Place> optionalPlace = placeRepository.findById(id);
+            if (optionalPlace.isPresent()) {
+                Place place = optionalPlace.get();
+                if (place.getUserId().equals(userId)) {
+                    place.setName(placeDTO.name());
+                    place.setIsPublic(placeDTO.isPublic());
+                    place.setDescription(placeDTO.description());
+                    place.setCoordinates(placeDTO.toEntity().getCoordinates());
+                    place.setCategory(placeDTO.category().toEntity());
+                    place.setLastModified(Instant.now());
+                    Place updatedPlace = placeRepository.save(place);
+                    return PlaceDTO.fromEntity(updatedPlace);
+                } else {
+                    throw new SecurityException("You are not authorized to update this place");
+                }
+            } else {
+                throw new IllegalArgumentException("Place not found");
+            }
+        } else {
+            throw new SecurityException("You are not authorized to update a place");
+        }
     }
 
     public void deletePlace(Long id) {
-        placeRepository.deleteById(id);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() && !authentication.getName().equals("anonymousUser")) {
+            String userId = authentication.getName();
+            Optional<Place> optionalPlace = placeRepository.findActiveById(id);
+            if (optionalPlace.isPresent()) {
+                Place place = optionalPlace.get();
+                if (place.getUserId().equals(userId)) {
+                    place.setDeleted(true);
+                    placeRepository.save(place);
+                } else {
+                    throw new SecurityException("You are not authorized to delete this place");
+                }
+            } else {
+                throw new IllegalArgumentException("Place not found");
+            }
+        } else {
+            throw new SecurityException("You are not authorized to delete a place");
+        }
     }
 }
