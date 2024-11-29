@@ -8,8 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 @EnableWebSecurity
@@ -22,13 +21,14 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(GET, "/api/categories/**").permitAll()
                         .requestMatchers(POST, "/api/categories/**").hasAuthority("SCOPE_admin")
-                        .requestMatchers(GET, "/api/places/user/**").hasAuthority("SCOPE_user")
+                        .requestMatchers(GET, "/api/places/user/**").permitAll()
                         .requestMatchers(GET, "/api/places/**").permitAll()
                         .requestMatchers(GET, "/api/places/category/**").permitAll()
                         .requestMatchers(GET, "/api/places/radius").permitAll()
-                        .requestMatchers(POST, "/api/places/**").hasAuthority("SCOPE_user")
-
-                        .anyRequest().authenticated()
+                        .requestMatchers(POST, "/api/places/**").authenticated()
+                        .requestMatchers(PUT, "/api/places/**").authenticated()
+                        .requestMatchers(DELETE, "/api/places/**").authenticated()
+                        .anyRequest().denyAll()
                 )
                 .oauth2ResourceServer((oauth2) -> oauth2
                         .jwt(Customizer.withDefaults())

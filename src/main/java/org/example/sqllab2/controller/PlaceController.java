@@ -17,8 +17,9 @@ public class PlaceController {
     private PlaceService placeService;
 
     @GetMapping
-    public List<PlaceDTO> getAllPlacesForUser() {
-        return placeService.getAllPlacesForUser();
+    public ResponseEntity<List<PlaceDTO>> getAllPlacesForUser() {
+        List<PlaceDTO> places = placeService.getAllPlacesForUser();
+        return ResponseEntity.ok(places);
     }
 
     @GetMapping("/{id}")
@@ -29,19 +30,21 @@ public class PlaceController {
     }
 
     @GetMapping("/category/{categoryId}")
-    public List<PlaceDTO> getPublicPlacesByCategory(@PathVariable Long categoryId) {
-        return placeService.getPublicPlacesByCategory(categoryId);
+    public ResponseEntity<List<PlaceDTO>> getPublicPlacesByCategory(@PathVariable Long categoryId) {
+        List<PlaceDTO> places = placeService.getPublicPlacesByCategory(categoryId);
+        return ResponseEntity.ok(places);
     }
 
     @GetMapping("/user/{userId}")
-    @PreAuthorize("isAuthenticated()")
-    public List<PlaceDTO> getUserPlaces(@PathVariable String userId) {
-        return placeService.getUserPlaces(userId);
+    public ResponseEntity<List<PlaceDTO>> getUserPlaces(@PathVariable String userId) {
+        List<PlaceDTO> places = placeService.getUserPlaces(userId);
+        return ResponseEntity.ok(places);
     }
 
     @GetMapping("/radius")
-    public List<PlaceDTO> getPlacesWithinRadius(@RequestParam double latitude, @RequestParam double longitude, @RequestParam double radius) {
-        return placeService.getPlacesWithinRadius(latitude, longitude, radius);
+    public ResponseEntity<List<PlaceDTO>> getPlacesWithinRadius(@RequestParam double latitude, @RequestParam double longitude, @RequestParam double radius) {
+        List<PlaceDTO> places = placeService.getPlacesWithinRadius(latitude, longitude, radius);
+        return ResponseEntity.ok(places);
     }
 
     @PostMapping

@@ -19,5 +19,6 @@ CREATE TABLE IF NOT EXISTS place
     coordinates GEOMETRY NOT NULL SRID 4326,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     category_id BIGINT NOT NULL,
+    deleted BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (category_id) REFERENCES category(id)
 );

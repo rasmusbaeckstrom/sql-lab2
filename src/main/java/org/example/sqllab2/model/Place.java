@@ -49,13 +49,13 @@ public class Place {
     @Column(name = "coordinates", columnDefinition = "geometry")
     private Point<G2D> coordinates;
 
-    public Long getId() {
-        return id;
-    }
+    @ColumnDefault("false")
+    @Column(name = "deleted", nullable = false)
+    private Boolean deleted = false;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public Long getId() { return id;}
+
+    public void setId(Long id) { this.id = id; }
 
     public String getName() {
         return name;
@@ -73,9 +73,7 @@ public class Place {
         this.category = category;
     }
 
-    public String getUserId() {
-        return userId;
-    }
+    public String getUserId() { return userId; }
 
     public void setUserId(String userId) {
         this.userId = userId;
@@ -117,7 +115,9 @@ public class Place {
         return coordinates;
     }
 
-    public void setCoordinates(Point<G2D> coordinates) {
-        this.coordinates = coordinates;
-    }
+    public void setCoordinates(Point<G2D> coordinates) { this.coordinates = coordinates; }
+
+    public Boolean getDeleted() { return deleted; }
+
+    public void setDeleted(Boolean deleted) { this.deleted = deleted; }
 }
