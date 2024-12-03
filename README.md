@@ -1,86 +1,102 @@
-Laboration 2 - Spring Boot Rest API with database persistence.
+## Laboration 2 - Spring Boot Rest API with Database Persistence
 
--------------------------------------
+### Start the Application
 
+1. **Start Docker Engine**:
+   Ensure Docker is installed and running on your machine.
 
-Start the application:
+2. **Run the Application**:
+   Start the Spring Boot application (`SqlLab2Application`).
 
-Start docker engine
-Run the application (SqlLab2Application)
-Connect to database (mydatabase)
-Manually insert schema.sql
-Manually insert data.sql
+3. **Connect to Database**:
+   Connect to the `mydatabase` database.
 
--------------------------------------
+4. **Manually Insert Schema**:
+   Execute the `schema.sql` script to create the necessary tables.
 
-API endpoints and examples:
+5. **Manually Insert Data**:
+   Execute the `data.sql` script to populate the database with initial data.
 
-GET: Get all categories or specific category.
-/api/categories
-/api/categories/1
+### API Endpoints and Examples
 
-{
-    "id": 1,
-    "name": "Restaurants",
-    "symbol": "🍽️",
-    "description": "Places to eat and dine"
-}
+#### Categories
 
-POST: Create a new category (requires admin role).
-/api/categories
+- **GET**: Get all categories or a specific category.
+  - `/api/categories`
+  - `/api/categories/1`
 
-{
-    "name": "Flower shops",
-    "symbol": "🌷",
-    "description": "Places to buy your flowers"
-}
-
-GET: Get all public places or specific public place (for anonymous users).
-/api/places
-/api/places/1
-
-GET: Get all public places within specific category.
-/api/places/category/1
-
-GET: Get all places (both public and private) for signed-in user.
-/api/places/user/rasmus
-
-GET: Get alla places within a certain area.
-/api/places/radius?latitude=59.3293&longitude=18.0686&radius=0
-
-{
-    "id": 1,
-    "name": "The Gourmet Bistro",
-    "userId": "rasmus",
-    "isPublic": true,
-    "description": "A fine dining experience with a selection of international cuisines.",
-    "longitude": 18.0686,
-    "latitude": 59.3293,
-    "category": {
+  ```json
+  {
       "id": 1,
       "name": "Restaurants",
       "symbol": "🍽️",
       "description": "Places to eat and dine"
-    }
-}
+  }
+  ```
 
-POST: Create a new place.
-/api/places
+- **POST**: Create a new category (requires admin role).
+  - `/api/categories`
 
-PUT: Update a place. 
-api/places/1
+  ```json
+  {
+      "name": "Flower shops",
+      "symbol": "🌷",
+      "description": "Places to buy your flowers"
+  }
+  ```
 
-{   
-    "name": "The Gourmet Bistro",
-    "userId": "rasmus",
-    "isPublic": true,
-    "description": "A fine dining experience with a selection of international cuisines.",
-    "longitude": 18.0686,
-    "latitude": 59.3293,
-    "category": {
+#### Places
+
+- **GET**: Get all public places or a specific public place (for anonymous users).
+  - `/api/places`
+  - `/api/places/1`
+
+- **GET**: Get all public places within a specific category.
+  - `/api/places/category/1`
+
+- **GET**: Get all places (both public and private) for the signed-in user.
+  - `/api/places/user/rasmus`
+
+- **GET**: Get all places within a certain area.
+  - `/api/places/radius?latitude=59.3293&longitude=18.0686&radius=0`
+
+  ```json
+  {
       "id": 1,
-    }
-}
+      "name": "The Gourmet Bistro",
+      "userId": "rasmus",
+      "isPublic": true,
+      "description": "A fine dining experience with a selection of international cuisines.",
+      "longitude": 18.0686,
+      "latitude": 59.3293,
+      "category": {
+        "id": 1,
+        "name": "Restaurants",
+        "symbol": "🍽️",
+        "description": "Places to eat and dine"
+      }
+  }
+  ```
 
-DELETE: Delete a place (soft delete). 
-api/places/1
+- **POST**: Create a new place.
+  - `/api/places`
+
+- **PUT**: Update a place.
+  - `/api/places/1`
+
+  ```json
+  {   
+      "name": "The Gourmet Bistro",
+      "userId": "rasmus",
+      "isPublic": true,
+      "description": "A fine dining experience with a selection of international cuisines.",
+      "longitude": 18.0686,
+      "latitude": 59.3293,
+      "category": {
+        "id": 1
+      }
+  }
+  ```
+
+- **DELETE**: Delete a place (soft delete).
+  - `/api/places/1`
